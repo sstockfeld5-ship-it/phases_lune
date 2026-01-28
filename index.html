@@ -2,401 +2,364 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Phases de la Lune (CM1/CM2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mais qui a croqué la Lune ?</title>
     <style>
         :root {
-            --space-color: #0a0a2a;
-            --sun-color: #ffcc00;
-            --earth-color: #2e86c1;
-            --moon-color: #dddddd;
-            --shadow-color: #222;
-            --orbit-speed: 20s; /* Durée d'un cycle complet */
+            --bg-color: #080810;
+            --panel-bg: rgba(255, 255, 255, 0.05);
+            --accent: #4fabff;
+            --text-color: #eee;
+            --mech-size: 320px; 
+            --zoom-size: 240px; 
         }
 
         body {
-            font-family: 'Comic Sans MS', Arial, sans-serif; /* Police adaptée aux enfants */
-            background-color: var(--space-color);
-            color: white;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+            margin: 0;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
-            padding: 20px;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 1.5px),
+                radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 1px);
+            background-size: 300px 300px, 120px 120px;
         }
 
-        h1 {
-            text-align: center;
-            color: var(--sun-color);
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        /* TITRE DRÔLE */
+        h1 { 
+            margin: 15px 0; 
+            text-shadow: 0 0 15px #ffd700; 
+            text-align: center; 
+            font-size: 1.8rem; 
+            color: #ffd700;
         }
 
-        .main-container {
+        /* CONTROLS */
+        .controls {
+            background: #1a1a25;
+            padding: 12px 25px;
+            border-radius: 40px;
             display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border: 1px solid #333;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
-            max-width: 1000px;
-            width: 100%;
+            z-index: 100;
         }
 
-        /* --- Section Vue Mécanique (du dessus) --- */
-        .mechanics-view {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            border: 2px solid #ffffff33;
-            border-radius: 50%;
-            background: radial-gradient(circle, #1a1a4a 0%, #0a0a2a 100%);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .label {
-            position: absolute;
+        button {
+            background: var(--accent);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            color: #000;
             font-weight: bold;
-            text-shadow: 1px 1px 2px black;
+            cursor: pointer;
+            transition: transform 0.1s;
         }
+        button:active { transform: scale(0.95); }
 
-        /* Le Soleil (Source de lumière venant de la GAUCHE dans cet exemple) */
-        .sun-source-indicator {
-            position: absolute;
-            left: -60px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--sun-color);
-            font-weight: bold;
+        .slider-group { display: flex; align-items: center; gap: 10px; }
+        input[type=range] { cursor: pointer; accent-color: var(--accent); width: 150px; }
+
+        /* CONTAINER */
+        .main-container {
             display: flex;
-            align-items: center;
-        }
-        .sun-source-indicator::after {
-            content: "→→→ Lumière du Soleil";
-            margin-left: 10px;
-        }
-
-        /* La Terre au centre */
-        .earth {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 30% 30%, var(--earth-color), #1a5276);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            box-shadow: 0 0 15px var(--earth-color);
-        }
-
-        /* Conteneur rotatif pour l'orbite de la Lune */
-        .moon-orbit-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            transform: translate(-50%, -50%);
-            border: 1px dashed #ffffff55;
-            border-radius: 50%;
-            animation: orbitRotate var(--orbit-speed) linear infinite;
-        }
-
-        /* La Lune dans la vue mécanique */
-        .moon-mechanic {
-            position: absolute;
-            top: 0; /* Positionne la lune en haut du cercle d'orbite */
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            margin-left: -20px; /* Centrage exact */
-            margin-top: -20px;
-            border-radius: 50%;
-            /* L'astuce CSS pour l'éclairage : un dégradé qui reste fixe par rapport au soleil (à gauche) */
-            background: linear-gradient(90deg, var(--moon-color) 50%, var(--shadow-color) 50%);
-            /* Contre-rotation pour garder la même face vers la Terre */
-            animation: counterRotate var(--orbit-speed) linear infinite;
-            box-shadow: 0 0 5px #ffffff55;
-            display: flex;
+            flex-direction: row;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+            flex-wrap: wrap;
         }
 
-        /* Marqueur de la face visible (le drapeau rouge) */
-        .face-marker {
-            position: absolute;
-            /* On place le marqueur sur le côté GAUCHE de la lune (le côté blanc initialement) */
-            left: 5px; 
-            width: 8px;
-            height: 8px;
-            background-color: red;
-            border-radius: 50%;
-            box-shadow: 0 0 5px red;
-        }
-        .marker-label {
-             position: absolute;
-             left: 15px;
-             font-size: 0.7em;
-             color: red;
-             white-space: nowrap;
-             /* Le texte doit aussi contre-tourner pour rester lisible */
-             animation: orbitRotate var(--orbit-speed) linear infinite;
-        }
-
-
-        /* --- Section Vue depuis la Terre --- */
-        .earth-view-container {
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 300px;
         }
 
-        .phase-display-box {
-            width: 200px;
-            height: 200px;
-            background-color: var(--space-color);
-            border: 4px solid var(--earth-color);
-            border-radius: 10px;
+        h2 { 
+            color: var(--accent); 
+            border-bottom: 1px solid #444; 
+            width: 100%; text-align: center; padding-bottom: 8px; margin-top: 0; font-size: 1.2rem;
+        }
+
+        /* VUE ESPACE */
+        .scene-mech {
+            position: relative;
+            width: var(--mech-size);
+            height: var(--mech-size);
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 20px #000;
         }
 
-        /* La représentation visuelle de la phase (gérée par JS) */
-        #phase-visual {
-            width: 150px;
-            height: 150px;
+        .sun-dir {
+            position: absolute; left: -40px;
+            color: #ffd700; font-weight: bold; text-shadow: 0 0 10px orange;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        .earth {
+            width: 50px; height: 50px;
+            background: radial-gradient(circle at 30% 30%, #2e86c1, #001f3f);
             border-radius: 50%;
-            background-color: var(--shadow-color); /* Départ: Nouvelle lune (noir) */
+            box-shadow: 0 0 15px rgba(46, 134, 193, 0.5);
+            z-index: 5;
+        }
+
+        .orbit {
+            position: absolute; width: 90%; height: 90%;
+            border: 1px dashed rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+
+        .moon-small {
+            position: absolute; top: 0; left: 50%;
+            width: 30px; height: 30px;
+            margin-left: -15px; margin-top: -15px;
+            background: #ccc; border-radius: 50%;
+            box-shadow: 0 0 8px white;
+        }
+        .moon-small::after {
+            content:''; position:absolute; top:0; left:0; width:100%; height:100%;
+            border-radius:50%;
+            background: radial-gradient(circle at -50% 50%, transparent 40%, #000 100%);
+        }
+
+        .red-dot {
+            width: 5px; height: 5px; background: red; border-radius: 50%;
+            position: absolute; left: 2px; top: 12px;
+            z-index: 10; box-shadow: 0 0 4px red;
+        }
+
+        /* VUE ZOOM */
+        .scene-zoom {
             position: relative;
+            width: var(--zoom-size);
+            height: var(--zoom-size);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255,255,255,0.1);
+            background: #000;
             overflow: hidden;
-            box-shadow: 0 0 10px #ffffff33;
+            margin-bottom: 15px;
         }
-        
-        /* Masques pour créer les croissants et quartiers (pilotés par JS) */
-        .mask-half {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background-color: var(--moon-color);
-            transition: all 0.3s ease;
-        }
-        #mask-left { left: 0; transform-origin: right center;}
-        #mask-right { right: 0; transform-origin: left center;}
+        canvas { width: 100%; height: 100%; border-radius: 50%; }
 
-        /* --- Textes et Explications --- */
-        #phase-name {
-            font-size: 1.8em;
-            color: var(--sun-color);
-            text-align: center;
-            min-height: 1.8em;
-            font-weight: bold;
+        .phase-name {
+            font-size: 1.4rem; font-weight: bold; color: var(--accent);
+            text-align: center; min-height: 1.5em;
         }
 
-        .explanation-box {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 800px;
-            margin-top: 30px;
-            border: 2px solid var(--sun-color);
+        /* EXPLICATIONS */
+        .explanation-section {
+            width: 100%; max-width: 1100px; margin-top: 30px; margin-bottom: 50px;
+            display: flex; gap: 20px; flex-wrap: wrap;
         }
+        .exp-card {
+            flex: 1; min-width: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px; border-radius: 15px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); line-height: 1.6;
+        }
+        .exp-card h3 { color: var(--accent); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        strong { color: #fff; font-weight: 700; }
 
-        .explanation-box h2 {
-            color: var(--sun-color);
-            margin-top: 0;
-        }
-        
-        .important-note {
-            color: red;
-            font-weight: bold;
-        }
-
-        /* --- Animations CSS --- */
-        /* Rotation de l'orbite complète */
-        @keyframes orbitRotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* Contre-rotation de la Lune sur elle-même */
-        /* C'est L'ÉLÉMENT CLÉ pour la rotation synchrone */
-        @keyframes counterRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(-360deg); }
+        @media (max-width: 800px) {
+            .main-container { flex-direction: column; align-items: center; }
+            :root { --mech-size: 280px; --zoom-size: 200px; }
+            .sun-dir { left: -20px; font-size: 0.8em; }
+            .explanation-section { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-    <h1>L'Animation des Phases de la Lune (CM1/CM2)</h1>
+    <h1>Mais qui a croqué la Lune ? 🥐</h1>
+
+    <div class="controls">
+        <button id="btn-pause" onclick="togglePause()">⏸ Pause</button>
+        <div class="slider-group">
+            <span>Vitesse :</span>
+            <input type="range" id="speed" min="0" max="0.8" step="0.01" value="0.05">
+        </div>
+    </div>
 
     <div class="main-container">
-        <div style="text-align: center;">
-            <h2>Vue du dessus (Dans l'espace)</h2>
-            <div class="mechanics-view">
-                <div class="sun-source-indicator"></div>
-                <div class="label" style="top: 10px; left: 50%; transform: translateX(-50%);">Orbite de la Lune</div>
-                
-                <div class="earth">
-                    <div class="label" style="top: 65px; left: 50%; transform: translateX(-50%);">Terre</div>
+        <div class="panel">
+            <h2>1. Vue de l'Espace</h2>
+            <div class="scene-mech">
+                <div class="sun-dir">
+                    <span style="font-size:2em">☀️</span>
+                    <span>Soleil</span>
                 </div>
-                
-                <div class="moon-orbit-container" id="orbit-container">
-                    <div class="moon-mechanic">
-                        <div class="face-marker"></div>
-                        <div class="marker-label">Cette face regarde toujours la Terre !</div>
+                <div class="earth"></div>
+                <div class="orbit" id="orbit-ring">
+                    <div class="moon-small" id="moon-mech">
+                        <div class="red-dot"></div>
                     </div>
                 </div>
             </div>
+            <p style="font-size:0.9em; color:#aaa; text-align:center;">
+                Regarde le <span style="color:red">point rouge</span>.
+            </p>
         </div>
 
-        <div class="earth-view-container">
-            <h2>Vue depuis la Terre</h2>
-            <div class="phase-display-box">
-                <div id="phase-visual">
-                     <div id="mask-left" class="mask-half"></div>
-                    <div id="mask-right" class="mask-half"></div>
-                </div>
+        <div class="panel">
+            <h2>2. Vue depuis la Terre</h2>
+            <div class="scene-zoom">
+                <canvas id="moonCanvas" width="400" height="400"></canvas>
             </div>
-            <div>Phase actuelle :</div>
-            <div id="phase-name">Nouvelle Lune</div>
+            <div class="phase-name" id="label">Nouvelle Lune</div>
+            <div style="font-size:0.85em; opacity:0.6">Ombre naturelle progressive</div>
         </div>
     </div>
 
-    <div class="explanation-box">
-        <h2>💡 Pourquoi la Lune change-t-elle de forme ?</h2>
-        <p>La Lune ne produit pas sa propre lumière, elle réfléchit la lumière du Soleil. Comme une balle éclairée par une lampe de poche, une moitié de la Lune est toujours éclairée par le Soleil, et l'autre moitié est dans l'ombre.</p>
-        <p>En tournant autour de la Terre, nous voyons différentes parties de sa face éclairée. C'est ce qui crée les <strong>phases</strong>.</p>
-        
-        <h2>🤔 Pourquoi voit-on toujours la même face ?</h2>
-        <p>Regarde le petit point <span class="important-note">rouge</span> sur la Lune dans la "Vue du dessus".</p>
-        <p>La Lune tourne sur elle-même exactement en même temps qu'elle fait le tour de la Terre (environ 27 jours). C'est ce qu'on appelle la <strong>rotation synchrone</strong>. Résultat : elle nous présente toujours le même côté ! L'autre côté est appelé la "face cachée".</p>
+    <div class="explanation-section">
+        <div class="exp-card">
+            <h3>💡 Pourquoi la Lune change-t-elle de forme ?</h3>
+            <p>La Lune ne produit pas sa propre lumière, elle <strong>diffuse la lumière du Soleil</strong>. Comme une balle éclairée par une lampe de poche, une moitié est toujours éclairée, l'autre est dans l'ombre.</p>
+            <p>En tournant autour de la Terre, nous voyons différentes parties de sa face éclairée. C'est ce qui crée les <strong>phases</strong>.</p>
+        </div>
+        <div class="exp-card">
+            <h3>🤔 Pourquoi voit-on toujours la même face ?</h3>
+            <p>Regarde le petit point <span style="color:red; font-weight:bold;">rouge</span> sur la Lune dans la "Vue de l'Espace".</p>
+            <p>La Lune tourne sur elle-même exactement en même temps qu'elle fait le tour de la Terre. C'est la <strong>rotation synchrone</strong>.</p>
+        </div>
     </div>
 
     <script>
-        // Script pour synchroniser le nom et le visuel de la phase avec l'animation CSS
-        const orbitContainer = document.getElementById('orbit-container');
-        const phaseNameDisplay = document.getElementById('phase-name');
-        const phaseVisual = document.getElementById('phase-visual');
-        const maskLeft = document.getElementById('mask-left');
-        const maskRight = document.getElementById('mask-right');
+        let angle = 0; 
+        
+        // VITESSE INITIALE : 0.05
+        let speedVal = 0.05; 
+        
+        let isPaused = false;
+        
+        const orbitRing = document.getElementById('orbit-ring');
+        const moonMech = document.getElementById('moon-mech');
+        const canvas = document.getElementById('moonCanvas');
+        const ctx = canvas.getContext('2d');
+        const label = document.getElementById('label');
+        const btnPause = document.getElementById('btn-pause');
+        const speedInput = document.getElementById('speed');
+        const moonImg = new Image();
+        moonImg.src = 'https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg';
 
-        // Fonction pour obtenir l'angle de rotation actuel de l'animation CSS
-        function getRotationAngle(element) {
-            const st = window.getComputedStyle(element, null);
-            const tr = st.getPropertyValue("-webkit-transform") ||
-                       st.getPropertyValue("-moz-transform") ||
-                       st.getPropertyValue("-ms-transform") ||
-                       st.getPropertyValue("-o-transform") ||
-                       st.getPropertyValue("transform") ||
-                       "FAIL";
-
-            if (tr === "FAIL" || tr === "none") return 0;
-
-            let values = tr.split('(')[1].split(')')[0].split(',');
-            let a = values[0];
-            let b = values[1];
-            
-            // Calcul de l'angle en degrés à partir de la matrice de transformation
-            let angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-            
-            // Normalisation de l'angle entre 0 et 360
-            if (angle < 0) angle += 360;
-            return angle;
+        speedInput.addEventListener('input', (e) => speedVal = parseFloat(e.target.value));
+        
+        function togglePause() {
+            isPaused = !isPaused;
+            btnPause.textContent = isPaused ? "▶ Lecture" : "⏸ Pause";
+            btnPause.style.backgroundColor = isPaused ? "#2ecc71" : "#4fabff";
         }
 
-        // Fonction principale mise à jour à chaque image
-        function updatePhaseInfo() {
-            // L'angle 0 est en haut (Nouvelle Lune dans notre configuration où le soleil est à gauche)
-            // L'animation tourne dans le sens horaire.
-            let angle = getRotationAngle(orbitContainer);
-            
-            let phaseName = "";
-            let visualState = ""; // Pour contrôler l'apparence de la lune vue de Terre
+        // --- MOTEUR GRAPHIQUE ---
+        function drawRealisticMoon(ctx, width, height, phaseAngleDeg) {
+            ctx.clearRect(0, 0, width, height);
 
-            // Détermination de la phase en fonction de l'angle (approximation pour CM1/CM2)
-            // Nous utilisons des plages d'angles pour définir les 8 phases principales.
-            if (angle >= 340 || angle < 20) {
-                phaseName = "Nouvelle Lune";
-                // Tout noir
-                maskLeft.style.backgroundColor = "var(--shadow-color)";
-                maskRight.style.backgroundColor = "var(--shadow-color)";
-                maskLeft.style.transform = "rotateY(0deg)";
-                maskRight.style.transform = "rotateY(0deg)";
-            } 
-            else if (angle >= 20 && angle < 70) {
-                phaseName = "Premier Croissant";
-                // Croissant droit lumineux
-                maskLeft.style.backgroundColor = "var(--shadow-color)";
-                maskRight.style.backgroundColor = "var(--moon-color)";
-                maskLeft.style.transform = "rotateY(0deg)";
-                // On "plie" le masque droit pour révéler un croissant
-                maskRight.style.transform = `rotateY(${180 - ((angle-20)/50 * 90)}deg)`; 
-            } 
-            else if (angle >= 70 && angle < 110) {
-                phaseName = "Premier Quartier";
-                 // Moitié droite lumineuse
-                maskLeft.style.backgroundColor = "var(--shadow-color)";
-                maskRight.style.backgroundColor = "var(--moon-color)";
-                maskLeft.style.transform = "rotateY(0deg)";
-                maskRight.style.transform = "rotateY(0deg)";
-            } 
-            else if (angle >= 110 && angle < 160) {
-                phaseName = "Lune Gibbeuse Croissante";
-                 // Plus de la moitié droite lumineuse
-                maskLeft.style.backgroundColor = "var(--moon-color)";
-                maskRight.style.backgroundColor = "var(--moon-color)";
-                maskRight.style.transform = "rotateY(0deg)";
-                // On "déplie" le masque gauche (qui est couleur lune) pour couvrir l'ombre
-                 maskLeft.style.transform = `rotateY(${(angle-110)/50 * 90}deg)`;
-            } 
-            else if (angle >= 160 && angle < 200) {
-                phaseName = "Pleine Lune";
-                // Tout lumineux
-                maskLeft.style.backgroundColor = "var(--moon-color)";
-                maskRight.style.backgroundColor = "var(--moon-color)";
-                maskLeft.style.transform = "rotateY(0deg)";
-                maskRight.style.transform = "rotateY(0deg)";
-            } 
-            else if (angle >= 200 && angle < 250) {
-                phaseName = "Lune Gibbeuse Décroissante";
-                // L'ombre arrive par la droite
-                maskLeft.style.backgroundColor = "var(--moon-color)";
-                maskRight.style.backgroundColor = "var(--moon-color)";
-                maskLeft.style.transform = "rotateY(0deg)";
-                 // On commence à plier le masque droit (couleur lune) pour révéler le fond noir
-                 maskRight.style.transform = `rotateY(${((angle-200)/50 * 90)}deg)`;
-            } 
-            else if (angle >= 250 && angle < 290) {
-                phaseName = "Dernier Quartier";
-                 // Moitié gauche lumineuse
-                maskLeft.style.backgroundColor = "var(--moon-color)";
-                maskRight.style.backgroundColor = "var(--shadow-color)";
-                maskLeft.style.transform = "rotateY(0deg)";
-                maskRight.style.transform = "rotateY(0deg)";
-            } 
-            else if (angle >= 290 && angle < 340) {
-                phaseName = "Dernier Croissant";
-                 // Croissant gauche lumineux
-                maskLeft.style.backgroundColor = "var(--moon-color)";
-                maskRight.style.backgroundColor = "var(--shadow-color)";
-                maskRight.style.transform = "rotateY(0deg)";
-                 // On replie le masque gauche pour ne laisser qu'un croissant
-                 maskLeft.style.transform = `rotateY(${180 - ((angle-290)/50 * 90)}deg)`;
+            // 1. Fond (Texture Lune)
+            if (moonImg.complete) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(width/2, height/2, width/2, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(moonImg, 0, 0, width, height);
+                ctx.restore();
+            } else {
+                ctx.fillStyle = "#ccc";
+                ctx.beginPath();
+                ctx.arc(width/2, height/2, width/2, 0, Math.PI * 2);
+                ctx.fill();
             }
 
-            phaseNameDisplay.textContent = phaseName;
+            // 2. Calcul de l'Ombre
+            let p = (phaseAngleDeg + 90) % 360; 
+            ctx.fillStyle = "rgba(5, 5, 12, 0.96)"; // Ombre noire
             
-            // Boucle d'animation fluide
-            requestAnimationFrame(updatePhaseInfo);
+            const r = width / 2;
+            const cx = width / 2;
+            const cy = height / 2;
+
+            ctx.beginPath();
+            
+            // PHASE CROISSANTE (0 -> 180) : Ombre à Gauche
+            if (p <= 180) { 
+                let rad = p * (Math.PI / 180);
+                let xOffset = r * Math.cos(rad); 
+                // Arc extérieur gauche
+                ctx.arc(cx, cy, r, -Math.PI/2, Math.PI/2, true);
+                // Courbe intérieure
+                ctx.ellipse(cx, cy, Math.abs(xOffset), r, 0, Math.PI/2, -Math.PI/2, xOffset > 0);
+            } 
+            // PHASE DÉCROISSANTE (180 -> 360) : Ombre à Droite
+            else {
+                let rad = (p - 180) * (Math.PI / 180);
+                let xOffset = r * Math.cos(rad); 
+                
+                // Arc extérieur droit
+                ctx.arc(cx, cy, r, -Math.PI/2, Math.PI/2, false);
+                // Courbe intérieure
+                ctx.ellipse(cx, cy, Math.abs(xOffset), r, 0, Math.PI/2, -Math.PI/2, xOffset > 0);
+            }
+            ctx.fill();
+
+            // 3. Ombre 3D
+            let grad = ctx.createRadialGradient(cx, cy, r * 0.85, cx, cy, r);
+            grad.addColorStop(0, "rgba(0,0,0,0)");
+            grad.addColorStop(1, "rgba(0,0,0,0.6)");
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI*2);
+            ctx.fill();
+            
+            return p;
         }
 
-        // Démarrer la boucle de mise à jour JS
-        updatePhaseInfo();
+        function updateText(pAngle) {
+            let txt = "";
+            // Zones de texte
+            if(pAngle >= 355 || pAngle < 5) txt = "Nouvelle Lune 🌑";
+            else if(pAngle >= 5 && pAngle < 85) txt = "Premier Croissant 🌒";
+            else if(pAngle >= 85 && pAngle < 95) txt = "Premier Quartier 🌓";
+            else if(pAngle >= 95 && pAngle < 175) txt = "Gibbeuse Croissante 🌔";
+            else if(pAngle >= 175 && pAngle < 185) txt = "Pleine Lune 🌕";
+            else if(pAngle >= 185 && pAngle < 265) txt = "Gibbeuse Décroissante 🌖";
+            else if(pAngle >= 265 && pAngle < 275) txt = "Dernier Quartier 🌗";
+            else txt = "Dernier Croissant 🌘";
+            label.innerText = txt;
+        }
+
+        function loop() {
+            if (!isPaused) {
+                angle += speedVal;
+                if (angle >= 360) angle = 0;
+            }
+
+            orbitRing.style.transform = `rotate(${angle}deg)`;
+            moonMech.style.transform = `translate(-50%, -50%) rotate(-${angle}deg)`;
+
+            let phase = drawRealisticMoon(ctx, 400, 400, angle);
+            updateText(phase);
+            requestAnimationFrame(loop);
+        }
+
+        if(moonImg.complete) loop();
+        else { moonImg.onload = loop; setTimeout(loop, 100); }
 
     </script>
 </body>
